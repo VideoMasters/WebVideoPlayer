@@ -26,4 +26,5 @@ def index(video_id):
     video_name = video["name"]
 
     video_url = video["sources"][1]["src"]
-    return render_template("template.html", video_name=video_name, video_url=video_url)
+    track_url = video["text_tracks"][1]["src"]
+    return render_template("template.html", video_name=video_name, video_url=video_url, track_url=track_url)
