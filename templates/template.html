@@ -1,12 +1,144 @@
-<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <link rel="icon" type="image/png" href="https://telegra.ph/file/3029c32661af05817490b.png">
+        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
+        <script "text/javascript" src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Poppins|Quattrocento+Sans" rel="stylesheet"/>
+        <script "text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js"></script>
         <title>{{ video_name }}</title>
+        <style type="text/css" media="screen">
+            html {
+                font-family: Poppins;
+                background: #000;
+                margin: 0;
+                padding: 0;
+            }
+            #logo {
+                position: fixed;
+                top: 10px;
+                left: 10px;
+                height: 60px;
+                width: 60px;
+                z-index: 10;
+            }
+
+        </style>
     </head>
     <body>
-        {{ video_url }}
+        <video controls crossorigin data-poster="https://telegra.ph/file/7f4a1f08d7dab89549898.jpg" playsinline>
+            <source src="{{ video_url }}" type="application/x-mpegURL">
+        </video>
+        <a href="https://t.me/deshdeepak_2" target="_blank" rel="noopener noreferrer">
+            <img draggable="true" src="https://telegra.ph/file/3029c32661af05817490b.png" id="logo">
+        </a>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                            const e = document.querySelector("video"),
+                                n = e.getElementsByTagName("source")[0].src,
+                                o = {};
+                            if(Hls.isSupported()) {
+                                            var config = {
+                                                            maxMaxBufferLength: 100,
+                                                        };
+                                            const t = new Hls(config);
+                                            t.loadSource(n), t.on(Hls.Events.MANIFEST_PARSED, function(n, l) {
+                                                            const s = t.levels.map(e => e.height);
+                                                            o.quality = {
+                                                                            default: s[0],
+                                                                            options: s,
+                                                                            forced: !0,
+                                                                            onChange: e => (function(e) {
+                                                                                            window.hls.levels.forEach((n, o) => {
+                                                                                                            n.height === e && (window.hls.currentLevel = o)
+                                                                                                        })
+                                                                                        })(e)
+                                                                        };
+                                                            new Plyr(e, o)
+                                                        }), t.attachMedia(e), window.hls = t
+                                        } else {
+                                                        new Plyr(e, o)
+                                                    }
+                        });
+        </script>
+        <script>
+
+        </script>
+  <script>
+    var dragItem = document.getElementById("logo");
+
+    var active = false;
+    var dragged = false;
+    var currentX;
+    var currentY;
+    var initialX;
+    var initialY;
+    var xOffset = 0;
+    var yOffset = 0;
+
+    dragItem.addEventListener("touchstart", dragStart, false);
+    dragItem.addEventListener("touchend", dragEnd, false);
+    dragItem.addEventListener("touchmove", drag, false);
+
+    dragItem.addEventListener("mousedown", dragStart, false);
+    dragItem.addEventListener("mouseup", dragEnd, false);
+    dragItem.addEventListener("mousemove", drag, false);
+    dragItem.addEventListener("click", click, false);
+
+    function click(e) {
+              if(dragged) {
+                        e.preventDefault();
+                        dragged = false;
+                    }
+          }
+
+    function dragStart(e) {
+      if (e.type === "touchstart") {
+        initialX = e.touches[0].clientX - xOffset;
+        initialY = e.touches[0].clientY - yOffset;
+      } else {
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+      }
+
+      if (e.target === dragItem) {
+        active = true;
+      }
+    }
+
+    function dragEnd(e) {
+      initialX = currentX;
+      initialY = currentY;
+
+      active = false;
+    }
+
+    function drag(e) {
+      if (active) {
+        dragged = true;
+
+        e.preventDefault();
+
+        if (e.type === "touchmove") {
+          currentX = e.touches[0].clientX - initialX;
+          currentY = e.touches[0].clientY - initialY;
+        } else {
+          currentX = e.clientX - initialX;
+          currentY = e.clientY - initialY;
+        }
+
+        xOffset = currentX;
+        yOffset = currentY;
+
+        setTranslate(currentX, currentY, dragItem);
+      }
+    }
+
+    function setTranslate(xPos, yPos, el) {
+      el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+    }
+  </script>
     </body>
 </html>
