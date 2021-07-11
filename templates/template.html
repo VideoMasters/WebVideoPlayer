@@ -16,6 +16,7 @@
                 margin: 0;
                 padding: 0;
             }
+
             #logo {
                 position: fixed;
                 top: 10px;
@@ -25,14 +26,200 @@
                 z-index: 10;
             }
 
+    .loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 9999;
+    }
+
+    .loading-text {
+        position: absolute;
+        top: -150;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        text-align: center;
+        width: 100%;
+        height: 100px;
+        line-height: 100px;
+    }
+
+    .loading-text span {
+        display: inline-block;
+        margin: 0 5px;
+        color: #00b3ff;
+        font-family: 'Quattrocento Sans', sans-serif;
+    }
+
+    .loading-text span:nth-child(1) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 0s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(2) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 0.2s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(3) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 0.4s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(4) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 0.6s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(5) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 0.8s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(6) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 1s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(7) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 1.2s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(8) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 1.4s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(9) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 1.6s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(10) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 1.8s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(11) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 2s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(12) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 2.2s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(13) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 2.4s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(14) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 2.6s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(15) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 2.8s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(16) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 3.0s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(17) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 3.2s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(18) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 3.4s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(19) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 3.6s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(20) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 3.8s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(21) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 4.0s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(22) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 4.2s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(23) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 4.4s infinite linear alternate;
+    }
+
+    .loading-text span:nth-child(24) {
+        filter: blur(0px);
+        animation: blur-text 1.5s 4.6s infinite linear alternate;
+    }
+
+    @keyframes blur-text {
+        0% {
+            filter: blur(0px);
+        }
+        100% {
+            filter: blur(4px);
+        }
+    }
+
         </style>
     </head>
     <body>
+        <div id="loading" class="loading">
+            <div class="loading-text">
+                <span class="loading-text-words">B</span>
+                <span class="loading-text-words">Y:</span>
+                <span class="loading-text-words"> - </span><br>
+                <span class="loading-text-words">D</span>
+                <span class="loading-text-words">E</span>
+                <span class="loading-text-words">S</span>
+                <span class="loading-text-words">H</span>
+                <span class="loading-text-words">D</span>
+                <span class="loading-text-words">E</span>
+                <span class="loading-text-words">E</span>
+                <span class="loading-text-words">P</span>
+                <span class="loading-text-words">A</span>
+                <span class="loading-text-words">K</span>
+                <span class="loading-text-words"> </span>
+                <span class="loading-text-words">&amp;</span>
+                <span class="loading-text-words"> </span>
+                <span class="loading-text-words">S</span>
+                <span class="loading-text-words">H</span>
+                <span class="loading-text-words">U</span>
+                <span class="loading-text-words">B</span>
+                <span class="loading-text-words">H</span>
+                <span class="loading-text-words">A</span>
+                <span class="loading-text-words">M</span>
+            </div>
+        </div>
         <video controls crossorigin data-poster="https://telegra.ph/file/7f4a1f08d7dab89549898.jpg" playsinline>
             <source src="{{ video_url }}" type="application/x-mpegURL">
         </video>
         <a href="https://t.me/deshdeepak_2" target="_blank" rel="noopener noreferrer">
-            <img draggable="true" src="https://telegra.ph/file/3029c32661af05817490b.png" id="logo">
+            <img draggable="true" src="https://telegra.ph/file/3029c32661af05817490b.png" id="logo" class="draggable">
         </a>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
@@ -68,10 +255,13 @@
                         });
         </script>
         <script>
-
+            setTimeout(videovisible, 5000)
+            function videovisible() {
+                            document.getElementById('loading').style.display = 'none'
+                        }
         </script>
   <script>
-    var dragItem = document.getElementById("logo");
+    var dragItems = document.getElementsByClassName("draggable");
 
     var active = false;
     var dragged = false;
@@ -82,14 +272,17 @@
     var xOffset = 0;
     var yOffset = 0;
 
-    dragItem.addEventListener("touchstart", dragStart, false);
-    dragItem.addEventListener("touchend", dragEnd, false);
-    dragItem.addEventListener("touchmove", drag, false);
+      for(let i = 0; i < dragItems.length; i++) {
+              dragItem = dragItems[i];
+              dragItem.addEventListener("touchstart", dragStart, false);
+              dragItem.addEventListener("touchend", dragEnd, false);
+              dragItem.addEventListener("touchmove", drag, false);
 
-    dragItem.addEventListener("mousedown", dragStart, false);
-    dragItem.addEventListener("mouseup", dragEnd, false);
-    dragItem.addEventListener("mousemove", drag, false);
-    dragItem.addEventListener("click", click, false);
+              dragItem.addEventListener("mousedown", dragStart, false);
+              dragItem.addEventListener("mouseup", dragEnd, false);
+              dragItem.addEventListener("mousemove", drag, false);
+              dragItem.addEventListener("click", click, false);
+          }
 
     function click(e) {
               if(dragged) {
