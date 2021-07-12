@@ -1,18 +1,10 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.8
+FROM 	nginx/unit:1.24.0-python3.9
 
-LABEL maintainer="Deshdeepak <rkdeshdeepak1@gmail.com>"
+COPY 	requirements.txt /tmp/requirements.txt
 
-ENV LISTEN_PORT 443
-EXPOSE 443
+RUN 	pip install -r /tmp/requirements.txt                               \
+    	&& apt autoremove --purge -y                                              \
+    	&& rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/*.list
 
-# copy over our requirements.txt file
-COPY requirements.txt /tmp/
-
-# upgrade pip and install required python packages
-RUN pip install -U pip
-RUN pip install -r /tmp/requirements.txt
-
-# copy over our app code
-COPY ./app /app
-
-ENV MESSAGE "Starting app"
+COPY 	./config.json /docker-entrypoint.d/config.json
+COPY 	./webapp /bcp

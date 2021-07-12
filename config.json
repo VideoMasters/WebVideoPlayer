@@ -1,0 +1,24 @@
+{
+    "listeners":{
+        "*:80":{
+            "pass":"applications/webapp"
+        },
+
+        "*:443":{
+            "pass":"applications/webapp",
+	    "tls": {
+	    	"certificate": "bundle"
+	    }
+        }
+    },
+
+    "applications":{
+        "webapp":{
+            "type":"python 3",
+            "path":"/bcp/",
+            "module": "wsgi",
+             "callable": "app"
+        }
+    }
+}
+
