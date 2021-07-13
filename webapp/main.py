@@ -25,8 +25,19 @@ def index(video_id):
 
     video_name = video["name"]
 
-    video_url = video["sources"][1]["src"]
+    video_source = video["sources"][3]
+    video_url = video_source["src"]
+    widevine_url = ""
+    microsoft_url = ""
+    if "key_systems" in video_source:
+        widevine_url = video_source["key_systems"]["com.widevine.alpha"]["license_url"]
+        microsoft_url = video_source["key_systems"]["com.microsoft.playready"]["license_url"]
     track_url = video["text_tracks"][1]["src"]
     return render_template(
-        "template.html", video_name=video_name, video_url=video_url, track_url=track_url
+        "template.html",
+        video_name=video_name,
+        video_url=video_url,
+        track_url=track_url,
+        widevine_url=widevine_url,
+        microsoft_url=microsoft_url,
     )
