@@ -1,0 +1,14 @@
+[Unit]
+Description=uWSGI instance to serve brightcove player
+After=network.target
+
+
+[Service]
+User=deshdeepak
+Group=www-data
+WorkingDirectory=/home/deshdeepak/BrightcovePlayer/webapp
+Environment="PATH=/home/deshdeepak/BrighcovePlayer/venv/bin"
+ExecStart=/home/deshdeepak/BrightcovePlayer/venv/bin/uwsgi --ini app.ini
+
+[Install]
+WantedBy=multi-user.target
