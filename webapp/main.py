@@ -1,11 +1,16 @@
 import os
+from urllib.parse import unquote
 import requests
 from flask import Flask
 from flask import render_template
-from config import Config
+from dotenv import load_dotenv
+from youtube_dl import YoutubeDL
 
-ACCOUNT_ID = os.environ.get("ACCOUNT_ID", Config.ACCOUNT_ID)
-BCOV_POLICY = os.environ.get("BCOV_POLICY", Config.BCOV_POLICY)
+
+load_dotenv()
+
+ACCOUNT_ID = os.environ.get("ACCOUNT_ID")
+BCOV_POLICY = os.environ.get("BCOV_POLICY")
 
 bc_url = f"https://edge.api.brightcove.com/playback/v1/accounts/{ACCOUNT_ID}/videos"
 
@@ -39,7 +44,7 @@ def brightcove(video_id):
     track_url = video["text_tracks"][1]["src"]
     return render_template(
         "template.html",
-        type="brightcove",
+        type="dash",
         video_name=video_name,
         video_url=video_url,
         track_url=track_url,
@@ -63,8 +68,31 @@ def jw(video_id):
     track_url = video["playlist"][0]["tracks"][0]["file"]
     return render_template(
         "template.html",
-        type="jw",
+        type="hls",
         video_name=video_name,
         video_url=video_url,
         track_url=track_url,
     )
+
+
+@app.route("/<string(length=11):video_id>")
+def youtube(video_id):
+    url = f"https://youtu.be/{video_id}"
+    with YoutubeDL() as ydl:
+      info_dict = ydl.extract_info(url, download=False)
+
+    video_name = info_dict['title']
+
+    videos = [ {"format": format["height"], "url": format["url"]} for format in info_dict["formats"] if format["format_id"] in ["18", "22"] ]
+    print(videos[0]["url"])
+    # captions = info_dict["aut|safeomatic_captions"]
+    captions = []
+    video_captions = [ {caption: captions[caption][-1]["url"]} for caption in captions if caption in ['en', 'hi']]
+
+    return render_template(
+        "yt_template.html",
+        video_name=video_name,
+        videos=videos,
+        video_captions=video_captions
+    )
+
