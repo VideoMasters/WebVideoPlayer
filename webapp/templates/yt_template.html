@@ -268,8 +268,7 @@
                 <span class="loading-text-words">M</span>
             </div>
         </div>
-        <video controls data-poster="https://telegra.ph/file/7f4a1f08d7dab89549898.jpg" playsinline id="player" style="background-color: #CCC;">
-            {#<source src="{{ video_url }}">#}
+        <video controls playsinline id="player" style="background-color: #CCC;">
         </video>
         <div class="logo-container">
             <a href="https://github.com/deshdeepak1" target="_blank" rel="noopener noreferrer" class="float" id="logo"></a>
@@ -287,13 +286,13 @@
                 },
                 "captions": {
                     "active": true,
-                    "update": true
+                    "update": true,
                 }
             };
             defaultOptions.tooltips = {controls: true, seek:true};
+            defaultOptions.disableContextMenu = false;
             defaultOptions.quality = {
                             default: {{ videos[0]["format"] }},
-                            {#options: {{ video_urls }}#}
                         };
             const player = new Plyr("#player", defaultOptions);
             player.source = {
@@ -308,6 +307,24 @@
                                                  },
                                             {% endfor %}
                                         ],
+                            poster: "https://telegra.ph/file/7f4a1f08d7dab89549898.jpg",
+                        {% if caption %}
+                            tracks: [
+                                                    {
+                                                        kind: 'captions',
+                                                        label: 'English',
+                                                        srclang: 'en',
+                                                        src: '{{ video_captions["en"]|safe }}',
+                                                        default: true,
+                                                    },
+                                                    {
+                                                        kind: 'captions',
+                                                        label: 'Hindi',
+                                                        srclang: 'hi',
+                                                        src: '{{ video_captions["hi"]|safe }}',
+                                                    },
+                                        ],
+                        {% endif %}
             };
         </script>
         <script>
