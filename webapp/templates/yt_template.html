@@ -269,6 +269,13 @@
             </div>
         </div>
         <video controls playsinline id="player" style="background-color: #CCC;">
+            {% for video in videos %}
+                <source type="video/mp4" src="{{ video["url"] | safe }}" size="{{ video["format"] }}">
+            {% endfor %}
+            {% if caption %}
+                <track src="{{ video_captions['en']|safe }}" kind="captions" srclang="en" label="English" default>
+                <track src="{{ video_captions['hi']|safe }}" kind="captions" srclang="hi" label="Hindi">
+            {% endif %}
         </video>
         <div class="logo-container">
             <a href="https://github.com/deshdeepak1" target="_blank" rel="noopener noreferrer" class="float" id="logo"></a>
@@ -278,6 +285,26 @@
             </div>
         </div>
         <script>
+            window.addEventListener("load", function() {
+              var tracks = document.querySelectorAll("track")
+                console.log(tracks);
+              for (var i = 0; i < tracks.length; i++) {
+                loadTrackWithAjax(tracks[i]);
+              }
+            });
+            function loadTrackWithAjax(track) {
+              var xhttp = new XMLHttpRequest();
+
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200 && this.responseText) {
+                  // If VTT fetch succeeded, replace the src with a BLOB URL.
+                  var blob = new Blob([this.responseText], { type: 'text/vtt' });
+                  track.setAttribute("src", URL.createObjectURL(blob));
+                }
+              };
+              xhttp.open("GET", track.src, true);
+              xhttp.send();
+            }
             var defaultOptions = {
                 "autoplay": false,
                 "muted": false,
@@ -295,37 +322,7 @@
                             default: {{ videos[0]["format"] }},
                         };
             const player = new Plyr("#player", defaultOptions);
-            player.source = {
-                            type: "video",
-                            title: "{{ video_name }}",
-                            sources: [
-                                            {% for video in videos %}
-                                                    {
-                                                        src: '{{ video["url"]|safe }}',
-                                                        type: 'video/mp4',
-                                                        size: {{ video["format"] }},
-                                                 },
-                                            {% endfor %}
-                                        ],
-                            poster: "https://telegra.ph/file/7f4a1f08d7dab89549898.jpg",
-                        {% if caption %}
-                            tracks: [
-                                                    {
-                                                        kind: 'captions',
-                                                        label: 'English',
-                                                        srclang: 'en',
-                                                        src: '{{ video_captions["en"]|safe }}',
-                                                        default: true,
-                                                    },
-                                                    {
-                                                        kind: 'captions',
-                                                        label: 'Hindi',
-                                                        srclang: 'hi',
-                                                        src: '{{ video_captions["hi"]|safe }}',
-                                                    },
-                                        ],
-                        {% endif %}
-            };
+            player.poster =  "https://telegra.ph/file/7f4a1f08d7dab89549898.jpg";
         </script>
         <script>
             setTimeout(videovisible, 5000)
