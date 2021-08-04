@@ -3,6 +3,7 @@ import tempfile
 from urllib.parse import unquote
 import requests
 from flask import Flask
+from flask import request
 from flask import render_template
 from dotenv import load_dotenv
 from werkzeug.utils import redirect
@@ -96,6 +97,37 @@ def youtube(video_id):
         videos=videos,
         caption=caption,
         video_captions=video_captions
+    )
+
+
+@app.route("/play")
+def play():
+    url = request.query_string.decode("utf-8").removeprefix("url=")
+    content_type = requests.head(url).headers["content-type"]
+    print(content_type)
+    con_type = content_type.split("/")[0]
+    if con_type == "audio":
+        title = "Audio"
+        url_type = content_type
+    elif con_type == "Video":
+        title = "Video"
+        url_type = content_type
+    elif url.endswith(".mp3") or url.endswith(".m4a"):
+        ext = url.split('.')[-1]
+        title = "Audio"
+        url_type = f"audio/{ext}"
+    elif url.endswith(".mp4") or url.endswith(".mkv"):
+        ext = url.split('.')[-1]
+        title = "Video"
+        url_type = f"video/{ext}"
+    else:
+        return "Unsupported format"
+
+    return render_template(
+        "direct_template.html",
+        title=title,
+        url=url,
+        type=url_type,
     )
 
 
