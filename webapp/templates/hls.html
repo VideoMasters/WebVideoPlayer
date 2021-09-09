@@ -7,6 +7,8 @@
         <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
         <script "text/javascript" src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Poppins|Quattrocento+Sans" rel="stylesheet"/>
+        <script "text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.1.3/dash.all.min.js"></script>
+        <script "text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js"></script>
         <script async src="https://arc.io/widget.min.js#P3bA8Vie"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <title>{{ title }}</title>
@@ -268,8 +270,8 @@
                 <span class="loading-text-words">M</span>
             </div>
         </div>
-        <video controls playsinline id="player" style="background-color: #CCC;">
-            <source type="{{ type }}" src="{{ url }}" >
+        <video controls crossorigin data-poster="https://telegra.ph/file/7f4a1f08d7dab89549898.jpg" playsinline id="player" style="background-color: #CCC;">
+            <source src="{{ url }}">
         </video>
         <div class="logo-container">
             <a href="https://github.com/deshdeepak1" target="_blank" rel="noopener noreferrer" class="float" id="logo"></a>
@@ -279,24 +281,38 @@
             </div>
         </div>
         <script>
-            var defaultOptions = {
-                "autoplay": false,
-                "muted": false,
-                "loop": {
-                    "active": false
-                },
-                "captions": {
-                    "active": true,
-                    "update": true,
-                }
-            };
-            defaultOptions.tooltips = {controls: true, seek:true};
-            defaultOptions.disableContextMenu = false;
-            defaultOptions.quality = {
-                            default: 360,
-                        };
-            const player = new Plyr("#player", defaultOptions);
-            player.poster =  "https://telegra.ph/file/7f4a1f08d7dab89549898.jpg";
+            document.addEventListener("DOMContentLoaded", () => {
+                            const e = document.querySelector("video"),
+                                n = e.getElementsByTagName("source")[0].src,
+                                o = {};
+                            if(Hls.isSupported()) {
+                                            var config = {
+                                                            maxMaxBufferLength: 100,
+                                                        };
+                                            const t = new Hls(config);
+                                            t.loadSource(n), t.on(Hls.Events.MANIFEST_PARSED, function(n, l) {
+                                                            const s = t.levels.map(e => e.height);
+                                                            o.quality = {
+                                                                            default: s[0],
+                                                                            options: s,
+                                                                            forced: !0,
+                                                                            onChange: e => (function(e) {
+                                                                                            window.hls.levels.forEach((n, o) => {
+                                                                                                            n.height === e && (window.hls.currentLevel = o)
+                                                                                                        })
+                                                                                        })(e)
+                                                                        };
+                                                            o.previewThumbnails = {
+                                                                            enabled: true,
+                                                                            src: '{{ track_url }}'
+                                                                        };
+                                                            o.tooltips = {controls: true, seek:true};
+                                                            new Plyr(e, o)
+                                                        }), t.attachMedia(e), window.hls = t
+                                        } else {
+                                                        new Plyr(e, o)
+                                                    }
+                        });
         </script>
         <script>
             setTimeout(videovisible, 5000)

@@ -3,16 +3,35 @@ from . import BCOV_POLICY, ACCOUNT_ID
 import requests
 from youtube_dl import YoutubeDL
 from flask import render_template
-from flask import request
 
-bc_url = f"https://edge.api.brightcove.com/playback/v1/accounts/{ACCOUNT_ID}/videos"
-jw_url = "https://cdn.jwplayer.com/v2/media"
-
-bc_hdr = {"BCOV-POLICY": BCOV_POLICY}
+BC_URL = "https://edge.api.brightcove.com/playback/v1/accounts/{}/videos/{}"
+JW_URL = "https://cdn.jwplayer.com/v2/media/{}"
 
 
-def play_brightcove(video_id):
-    video_response = requests.get(f"{bc_url}/{video_id}", headers=bc_hdr)
+def play_dash(url, title, track_url, widevine_url, microsoft_url):
+    return render_template(
+        "dash.html",
+        title=title,
+        url=url,
+        track_url=track_url,
+        widevine_url=widevine_url,
+        microsoft_url=microsoft_url,
+    )
+
+
+def play_hls(url, title, track_url):
+    return render_template(
+        "hls.html",
+        title=title,
+        url=url,
+        track_url=track_url,
+    )
+
+
+def play_brightcove(video_id, account_id=ACCOUNT_ID, bcov_policy=BCOV_POLICY):
+    bc_url = BC_URL.format(account_id, video_id)
+    bc_hdr = {"BCOV-POLICY": bcov_policy}
+    video_response = requests.get(bc_url, headers=bc_hdr)
 
     if video_response.status_code != 200:
         return "<font color=red size=20>Wrong Video ID</font>"
@@ -31,19 +50,12 @@ def play_brightcove(video_id):
             "license_url"
         ]
     track_url = video["text_tracks"][1]["src"]
-    return render_template(
-        "template.html",
-        type="dash",
-        video_name=video_name,
-        video_url=video_url,
-        track_url=track_url,
-        widevine_url=widevine_url,
-        microsoft_url=microsoft_url,
-    )
+    return play_dash(video_url, video_name, track_url, widevine_url, microsoft_url)
 
 
 def play_jw(video_id):
-    video_response = requests.get(f"{jw_url}/{video_id}")
+    jw_url = JW_URL.format(video_id)
+    video_response = requests.get(jw_url)
 
     if video_response.status_code != 200:
         return "<font color=red size=20>Wrong Video ID</font>"
@@ -54,13 +66,7 @@ def play_jw(video_id):
 
     video_url = video["playlist"][0]["sources"][0]["file"]
     track_url = video["playlist"][0]["tracks"][0]["file"]
-    return render_template(
-        "template.html",
-        type="hls",
-        video_name=video_name,
-        video_url=video_url,
-        track_url=track_url,
-    )
+    return play_hls(video_url, video_name, track_url)
 
 
 def play_youtube(video_id):
@@ -84,30 +90,27 @@ def play_youtube(video_id):
     )
 
 
-def play_audio():
-    url = request.query_string.decode("utf-8").removeprefix("url=")
+def play_audio(url, title):
     ext = url.split('.')[-1]
-    title = "Audio"
     url_type = f"audio/{ext}"
 
     return render_template(
-        "direct_template.html",
+        "audio_video.html",
         title=title,
         url=url,
         type=url_type,
     )
 
 
-def play_video():
-    url = request.query_string.decode("utf-8").removeprefix("url=")
+def play_video(url, title, track_url):
     ext = url.split('.')[-1]
-    title = "Video"
     url_type = f"video/mp4"
 
     return render_template(
-        "direct_template.html",
+        "audio_video.html",
         title=title,
         url=url,
         type=url_type,
+        track_url=track_url,
     )
 

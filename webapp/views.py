@@ -7,9 +7,12 @@ from .players import (
         play_jw,
         play_youtube,
         play_audio,
-        play_video
+        play_video,
+        play_dash,
+        play_hls
 )
 from flask import Flask
+from flask import request
 from werkzeug.utils import redirect
 
 
@@ -67,11 +70,34 @@ def youtube(video_id):
 
 @app.route("/audio")
 def audio():
-    return play_audio()
+    url = request.args.get("url")
+    title = request.args.get("title", "Audio")
+    return play_audio(url, title)
 
 
 @app.route("/video")
 def video():
-    return play_video()
+    url = request.args.get("url")
+    track_url = request.args.get("track", "")
+    title = request.args.get("title", "Video")
+    return play_video(url, title, track_url)
+
+
+@app.route("/mpd")
+def mpd():
+    url = request.args.get("url")
+    title = request.args.get("title", "DASH")
+    track_url = request.args.get("track", "")
+    widevine_url = request.args.get("wv_url", "")
+    microsoft_url = request.args.get("ms_url", "")
+    return play_dash(url, title, track_url, widevine_url, microsoft_url)
+
+
+@app.route("/m3u8")
+def m3u8():
+    url = request.args.get("url")
+    title = request.args.get("title", "HLS")
+    track_url = request.args.get("track", "")
+    return play_hls(url, title, track_url)
 
 
