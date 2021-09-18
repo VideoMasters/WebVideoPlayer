@@ -318,6 +318,7 @@
             }
         });
         dash.on("streamInitialized", function() {
+        {% if not bitrate %}
             const availableQualities = dash.getBitrateInfoListFor("video").map((l) => l.height);
             defaultOptions.quality = {
                 default: availableQualities[0].height,
@@ -331,6 +332,21 @@
                     });
                 },
             };
+        {% else %}
+            const availableQualities = dash.getBitrateInfoListFor("video").map((l) => l.bitrate);
+            defaultOptions.quality = {
+                default: availableQualities[0].bitrate,
+                options: availableQualities,
+                forced: true,
+                onChange: function(newQuality) {
+                    dash.getBitrateInfoListFor("video").forEach((level, levelIndex) => {
+                        if (level.bitrate === newQuality) {
+                            dash.setQualityFor("video", level.qualityIndex);
+                        }
+                    });
+                },
+            };
+        {% endif %}
             defaultOptions.previewThumbnails = {
                             enabled: true,
                             src: '{{ track_url }}'

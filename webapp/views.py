@@ -90,7 +90,8 @@ def mpd():
     track_url = request.args.get("track", "")
     widevine_url = request.args.get("wv_url", "")
     microsoft_url = request.args.get("ms_url", "")
-    return play_dash(url, title, track_url, widevine_url, microsoft_url)
+    bitrate = request.args.get("bitrate", default=False, type=lambda v: v.lower() == 'true')
+    return play_dash(url, title, track_url, widevine_url, microsoft_url, bitrate)
 
 
 @app.route("/m3u8")
