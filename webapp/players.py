@@ -8,7 +8,7 @@ BC_URL = "https://edge.api.brightcove.com/playback/v1/accounts/{}/videos/{}"
 JW_URL = "https://cdn.jwplayer.com/v2/media/{}"
 
 
-def play_dash(url, title, track_url, widevine_url, microsoft_url, bitrate=False):
+def play_dash(url, title="Dash", track_url="", widevine_url="", microsoft_url="", bitrate=False):
     return render_template(
         "dash.html",
         title=title,
