@@ -6,9 +6,10 @@ from flask import render_template
 
 BC_URL = "https://edge.api.brightcove.com/playback/v1/accounts/{}/videos/{}"
 JW_URL = "https://cdn.jwplayer.com/v2/media/{}"
+VIMEO_URL = "https://player.vimeo.com/video/{}/config"
 
 
-def play_dash(url, title="Dash", track_url="", widevine_url="", microsoft_url="", bitrate=False):
+def play_dash(url, title="DASH", track_url="", widevine_url="", microsoft_url="", bitrate=False):
     return render_template(
         "dash.html",
         title=title,
@@ -20,7 +21,7 @@ def play_dash(url, title="Dash", track_url="", widevine_url="", microsoft_url=""
     )
 
 
-def play_hls(url, title, track_url):
+def play_hls(url, title="HLS", track_url=""):
     return render_template(
         "hls.html",
         title=title,
@@ -89,6 +90,18 @@ def play_youtube(video_id):
         caption=caption,
         video_captions=video_captions
     )
+
+
+def play_vimeo(video_id):
+    vimeo_url = VIMEO_URL.format(video_id)
+    video_response = requests.get(vimeo_url)
+
+    if video_response.status_code != 200:
+        return "<font color=red size=20>Wrong Video ID</font>"
+    video = video_response.json()
+    video_name = video["video"]["title"]
+    video_url = video["request"]["files"]["hls"]["cdns"]["akfire_interconnect_quic"]["url"]
+    return play_hls(video_url, video_name)
 
 
 def play_audio(url, title):

@@ -6,6 +6,7 @@ from .players import (
         play_brightcove,
         play_jw,
         play_youtube,
+        play_vimeo,
         play_audio,
         play_video,
         play_dash,
@@ -50,6 +51,12 @@ def _youtube(video_id):
     return play_youtube(video_id)
 
 
+@app.route("/vimeo/<int:video_id>")
+@check_direct
+def _vimeo(video_id):
+    return play_vimeo(video_id)
+
+
 @app.route("/brightcove/<video_id>")
 def brightcove(video_id):
     video_id = vigenere.decode(KEY, video_id)
@@ -66,6 +73,12 @@ def jw(video_id):
 def youtube(video_id):
     video_id = vigenere.decode(KEY, video_id)
     return play_youtube(video_id)
+
+
+@app.route("/vimeo/<video_id>")
+def vimeo(video_id):
+    video_id = vigenere.decode(KEY, video_id)
+    return play_vimeo(video_id)
 
 
 @app.route("/audio")
