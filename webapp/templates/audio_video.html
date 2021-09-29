@@ -269,7 +269,7 @@
             </div>
         </div>
         <video controls playsinline id="player" style="background-color: #CCC;">
-            <source type="{{ type }}" src="{{ url }}" >
+            <source type="{{ type }}" src="{{ url | safe}}" >
         </video>
         <div class="logo-container">
             <a href="https://github.com/deshdeepak1" target="_blank" rel="noopener noreferrer" class="float" id="logo"></a>
@@ -292,7 +292,7 @@
             };
             defaultOptions.previewThumbnails = {
                             enabled: true,
-                            src: '{{ track_url }}'
+                            src: '{{ track_url | safe }}'
                         };
             defaultOptions.tooltips = {controls: true, seek:true};
             defaultOptions.disableContextMenu = false;

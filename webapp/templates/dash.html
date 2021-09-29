@@ -271,7 +271,7 @@
             </div>
         </div>
         <video controls crossorigin data-poster="https://telegra.ph/file/7f4a1f08d7dab89549898.jpg" playsinline id="player" style="background-color: #CCC;">
-            <source src="{{ url }}">
+            <source src="{{ url | safe }}">
         </video>
         <div class="logo-container">
             <a href="https://github.com/deshdeepak1" target="_blank" rel="noopener noreferrer" class="float" id="logo"></a>
@@ -311,10 +311,10 @@
         });
         dash.setProtectionData({
             "com.widevine.alpha": {
-                            "serverURL": "{{ widevine_url }}"
+                            "serverURL": "{{ widevine_url | safe }}"
             },
             "com.microsoft.playready": {
-                            "serverURL": "{{ microsoft_url }}"
+                            "serverURL": "{{ microsoft_url | safe }}"
             }
         });
         dash.on("streamInitialized", function() {
@@ -349,7 +349,7 @@
         {% endif %}
             defaultOptions.previewThumbnails = {
                             enabled: true,
-                            src: '{{ track_url }}'
+                            src: '{{ track_url | safe }}'
                         };
             defaultOptions.tooltips = {controls: true, seek:true};
             const player = new Plyr(video, defaultOptions);
