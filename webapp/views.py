@@ -42,6 +42,7 @@ def brightcove_index():
 @check_direct
 def _brightcove(video_id):
     fmt = request.args.get("format")
+    f = 3
     if fmt == "dash":
         f = 3
     elif fmt == "hls5":
@@ -88,6 +89,7 @@ def _vimeo(video_id):
 def brightcove(video_id):
     video_id = vigenere.decode(KEY, video_id)
     fmt = request.args.get("format")
+    f = 3
     if fmt == "dash":
         f = 3
     elif fmt == "hls5":
