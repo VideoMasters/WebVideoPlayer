@@ -73,6 +73,11 @@ def _youtube(video_id):
     return play_youtube(video_id)
 
 
+@app.route("/vimeo/")
+def vimeo_index():
+    return "Web Page for Vimeo"
+
+
 @app.route("/vimeo/<int:video_id>")
 @check_direct
 def _vimeo(video_id):
