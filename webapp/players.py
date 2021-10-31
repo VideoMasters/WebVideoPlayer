@@ -30,7 +30,7 @@ def play_hls(url, title="HLS", track_url=""):
     )
 
 
-def play_brightcove(video_id, account_id=ACCOUNT_ID, bcov_policy=BCOV_POLICY, fmt=3):
+def play_brightcove(video_id, account_id=ACCOUNT_ID, bcov_policy=BCOV_POLICY, fmt=3, url_args=""):
     bc_url = BC_URL.format(account_id, video_id)
     bc_hdr = {"BCOV-POLICY": bcov_policy}
     video_response = requests.get(bc_url, headers=bc_hdr)
@@ -52,6 +52,8 @@ def play_brightcove(video_id, account_id=ACCOUNT_ID, bcov_policy=BCOV_POLICY, fm
             "license_url"
         ]
     track_url = video["text_tracks"][1]["src"]
+    if url_args != "":
+        video_url += "?" + url_args
     return play_dash(video_url, video_name, track_url, widevine_url, microsoft_url)
 
 
