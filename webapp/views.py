@@ -41,7 +41,14 @@ def brightcove_index():
 @app.route("/brightcove/<int(fixed_digits=13):video_id>")
 @check_direct
 def _brightcove(video_id):
-    return play_brightcove(video_id)
+    fmt = request.args.get("format")
+    if fmt == "dash":
+        f = 3
+    elif fmt == "hls5":
+        f = 1
+    elif fmt == "hls4":
+        f = 4
+    return play_brightcove(video_id, fmt=f)
 
 
 @app.route("/jw/")
@@ -75,7 +82,14 @@ def _vimeo(video_id):
 @app.route("/brightcove/<video_id>")
 def brightcove(video_id):
     video_id = vigenere.decode(KEY, video_id)
-    return play_brightcove(video_id)
+    fmt = request.args.get("format")
+    if fmt == "dash":
+        f = 3
+    elif fmt == "hls5":
+        f = 1
+    elif fmt == "hls4":
+        f = 4
+    return play_brightcove(video_id, fmt=f)
 
 
 @app.route("/jw/<video_id>")
