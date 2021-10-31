@@ -33,16 +33,31 @@ def arc():
     return app.send_static_file('arc-sw.js')
 
 
+@app.route("/brightcove/")
+def brightcove_index():
+    return "Web Page for Brightcove"
+
+
 @app.route("/brightcove/<int(fixed_digits=13):video_id>")
 @check_direct
 def _brightcove(video_id):
     return play_brightcove(video_id)
 
 
+@app.route("/jw/")
+def jw_index():
+    return "Web Page for JW"
+
+
 @app.route("/jw/<string(length=8):video_id>")
 @check_direct
 def _jw(video_id):
     return play_jw(video_id)
+
+
+@app.route("/youtube/")
+def youtube_index():
+    return "Web Page for Youtube"
 
 
 @app.route("/youtube/<string(length=11):video_id>")
