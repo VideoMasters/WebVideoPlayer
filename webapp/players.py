@@ -30,7 +30,7 @@ def play_hls(url, title="HLS", track_url=""):
     )
 
 
-def play_brightcove(video_id, account_id=ACCOUNT_ID, bcov_policy=BCOV_POLICY):
+def play_brightcove(video_id, account_id=ACCOUNT_ID, bcov_policy=BCOV_POLICY, fmt=3):
     bc_url = BC_URL.format(account_id, video_id)
     bc_hdr = {"BCOV-POLICY": bcov_policy}
     video_response = requests.get(bc_url, headers=bc_hdr)
@@ -42,11 +42,11 @@ def play_brightcove(video_id, account_id=ACCOUNT_ID, bcov_policy=BCOV_POLICY):
 
     video_name = video["name"]
 
-    video_source = video["sources"][3]
+    video_source = video["sources"][fmt]
     video_url = video_source["src"]
     widevine_url = ""
     microsoft_url = ""
-    if "key_systems" in video_source:
+    if "key_systems" in video_source and fmt == 3:
         widevine_url = video_source["key_systems"]["com.widevine.alpha"]["license_url"]
         microsoft_url = video_source["key_systems"]["com.microsoft.playready"][
             "license_url"
