@@ -8,7 +8,7 @@ User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/WebVideoPlayer/
 Environment="PATH=/home/ubuntu/WebVideoPlayer/venv/bin"
-ExecStart=/home/ubuntu/WebVideoPlayer/venv/bin/uwsgi uwsgi.ini
+ExecStart=/home/ubuntu/WebVideoPlayer/venv/bin/uwsgi --http :5000 uwsgi.ini
 
 [Install]
 WantedBy=multi-user.target
