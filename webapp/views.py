@@ -1,4 +1,6 @@
+import base64
 from functools import wraps
+from urllib.parse import unquote
 from . import app
 from . import KEY, DIRECT
 from . import vigenere
@@ -120,21 +122,29 @@ def vimeo(video_id):
 @app.route("/audio")
 def audio():
     url = request.args.get("url")
-    title = request.args.get("title", "Audio")
+    if "http" not in url:
+        url = base64.b64decode(url).decode("UTF-8")
+    title = unquote(url.split("/")[-1])
+    title = request.args.get("title", title)
     return play_audio(url, title)
 
 
 @app.route("/video")
 def video():
     url = request.args.get("url")
+    if "http" not in url:
+        url = base64.b64decode(url).decode("UTF-8")
+    title = unquote(url.split("/")[-1])
+    title = request.args.get("title", title)
     track_url = request.args.get("track", "")
-    title = request.args.get("title", "Video")
     return play_video(url, title, track_url)
 
 
 @app.route("/mpd")
 def mpd():
     url = request.args.get("url")
+    if "http" not in url:
+        url = base64.b64decode(url).decode("UTF-8")
     title = request.args.get("title", "DASH")
     track_url = request.args.get("track", "")
     widevine_url = request.args.get("wv_url", "")
@@ -146,6 +156,8 @@ def mpd():
 @app.route("/m3u8")
 def m3u8():
     url = request.args.get("url")
+    if "http" not in url:
+        url = base64.b64decode(url).decode("UTF-8")
     title = request.args.get("title", "HLS")
     track_url = request.args.get("track", "")
     return play_hls(url, title, track_url)
