@@ -1,0 +1,14 @@
+[Unit]
+Description=uWSGI instance to serve WebVideo player
+After=network.target
+
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/WebVideoPlayer/
+Environment="PATH=/home/ubuntu/WebVideoPlayer/venv/bin"
+ExecStart=/home/ubuntu/WebVideoPlayer/venv/bin/uwsgi uwsgi.ini
+
+[Install]
+WantedBy=multi-user.target
