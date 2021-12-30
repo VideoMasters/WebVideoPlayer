@@ -3,7 +3,9 @@
         <script "text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js"></script>
 {% endblock %}
 {% block crossorigin %}crossorigin{% endblock %}
-{% block source %}<source src="{{ url | safe }}">{% endblock %}
+{% block source %}
+            <source src="{{ url | safe }}">
+{% endblock %}
 {% block script %}
             document.addEventListener("DOMContentLoaded", () => {
                             const video = document.querySelector("video"),
