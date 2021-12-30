@@ -3,4 +3,6 @@ __pycache__/
 .env
 *.bk
 *.sock
+*.diff
+*.db
 webapp/extra_views.py

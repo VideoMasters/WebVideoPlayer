@@ -87,7 +87,7 @@ def play_youtube(video_id):
 
     return render_template(
         "youtube.html",
-        video_name=video_name,
+        title=video_name,
         videos=videos,
         caption=caption,
         video_captions=video_captions
